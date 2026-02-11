@@ -1,0 +1,63 @@
+{% load humanize %}
+{% include 'countries/navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques des Pays</title>
+    <style>
+        table { border-collapse: collapse; width: 70%; margin-bottom: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #eee; }
+    </style>
+</head>
+<body>
+    <h1>Statistiques des Pays</h1>
+
+    <h2>Nombre total de pays : {{ total_countries }}</h2>
+
+    <h2>Top 10 pays par population</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Population</th>
+        </tr>
+        {% for country in top_population %}
+        <tr>
+            <td>{{ country.name }}</td>
+            <td>{{ country.population|intcomma }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Top 10 pays par superficie</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Superficie (km²)</th>
+        </tr>
+        {% for country in top_area %}
+        <tr>
+            <td>{{ country.name }}</td>
+            <td>{{ country.area|floatformat:0 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Répartition par région</h2>
+    <table>
+        <tr>
+            <th>Région</th>
+            <th>Nombre de pays</th>
+        </tr>
+        {% for region in region_distribution %}
+        <tr>
+            <td>{{ region.region|default:"Non spécifié" }}</td>
+            <td>{{ region.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

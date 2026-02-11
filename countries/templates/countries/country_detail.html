@@ -1,0 +1,281 @@
+{% include 'countries/navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ country.name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-stone-50: #fafaf9;
+            --color-stone-100: #f5f5f4;
+            --color-stone-200: #e7e5e4;
+            --color-stone-300: #d6d3d1;
+            --color-stone-400: #a8a29e;
+            --color-stone-500: #78716c;
+            --color-stone-600: #57534e;
+            --color-stone-700: #44403c;
+            --color-stone-800: #292524;
+            --color-stone-900: #1c1917;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--color-stone-50);
+            color: var(--color-stone-800);
+            line-height: 1.6;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        .country-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--color-stone-900);
+            margin-bottom: 24px;
+        }
+
+        .flag-container {
+            background: white;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flag-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 280px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.15s ease;
+        }
+
+        .info-card:hover {
+            border-color: var(--color-stone-300);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-stone-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .info-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--color-stone-500);
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-stone-900);
+            letter-spacing: -0.01em;
+            word-break: break-word;
+        }
+
+        .code-badges {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .code-badge {
+            background: white;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 8px;
+            padding: 16px 20px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .code-badge-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-stone-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .code-badge-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-stone-900);
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 32px 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .flag-container {
+                padding: 24px;
+            }
+
+            .flag-img {
+                max-height: 200px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+
+            .code-badges {
+                flex-direction: column;
+            }
+
+            .code-badge {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="country-header">
+            <h1>{{ country.name }}</h1>
+        </div>
+
+        <div class="flag-container">
+            <img src="{{ country.flag }}" alt="Drapeau de {{ country.name }}" class="flag-img">
+        </div>
+
+        <div class="code-badges">
+            <div class="code-badge">
+                <div class="code-badge-label">Code Alpha-2</div>
+                <div class="code-badge-value">{{ country.cca2 }}</div>
+            </div>
+            <div class="code-badge">
+                <div class="code-badge-label">Code Alpha-3</div>
+                <div class="code-badge-value">{{ country.cca3 }}</div>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Capitale
+                </div>
+                <div class="info-value">{{ country.capital }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                    Région
+                </div>
+                <div class="info-value">{{ country.region }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    </svg>
+                    Sous-région
+                </div>
+                <div class="info-value">{{ country.subregion }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Population
+                </div>
+                <div class="info-value">{{ country.population|intcomma }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    </svg>
+                    Superficie
+                </div>
+                <div class="info-value">{{ country.area|intcomma }} km²</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    Devises
+                </div>
+                <div class="info-value">{{ country.currencies }}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

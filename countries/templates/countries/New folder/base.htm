@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Countries App{% endblock %}</title>
+</head>
+<body>
+    {% include 'countries/navbar.html' %}
+    
+    {% block content %}
+    <!-- Ici chaque page va insérer son contenu -->
+    {% endblock %}
+</body>
+</html>

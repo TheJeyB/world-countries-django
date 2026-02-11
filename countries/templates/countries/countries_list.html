@@ -1,0 +1,418 @@
+{% load humanize %}
+{% include 'countries/navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pays</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-stone-50: #fafaf9;
+            --color-stone-100: #f5f5f4;
+            --color-stone-200: #e7e5e4;
+            --color-stone-300: #d6d3d1;
+            --color-stone-400: #a8a29e;
+            --color-stone-500: #78716c;
+            --color-stone-600: #57534e;
+            --color-stone-700: #44403c;
+            --color-stone-800: #292524;
+            --color-stone-900: #1c1917;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--color-stone-50);
+            color: var(--color-stone-800);
+            line-height: 1.6;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--color-stone-900);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--color-stone-500);
+            font-weight: 400;
+        }
+
+        .filter-section {
+            background: white;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 1fr 280px auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-stone-700);
+            letter-spacing: -0.01em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-stone-400);
+            pointer-events: none;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px 0 42px;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--color-stone-900);
+            background: var(--color-stone-50);
+            transition: all 0.15s ease;
+            font-family: inherit;
+            letter-spacing: -0.01em;
+        }
+
+        select {
+            padding-left: 14px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2378716c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--color-stone-400);
+            background: white;
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--color-stone-400);
+        }
+
+        .btn-primary {
+            height: 44px;
+            padding: 0 24px;
+            background: var(--color-stone-800);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-stone-900);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .table-container {
+            background: white;
+            border: 1px solid var(--color-stone-200);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--color-stone-100);
+            border-bottom: 1px solid var(--color-stone-200);
+        }
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-stone-700);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: var(--color-stone-800);
+            border-bottom: 1px solid var(--color-stone-100);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--color-stone-50);
+        }
+
+        td a {
+            color: var(--color-stone-900);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        td a:hover {
+            color: var(--color-stone-600);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 20px;
+            color: var(--color-stone-500);
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+            padding: 20px;
+        }
+
+        .pagination-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--color-stone-700);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            border: 1px solid var(--color-stone-200);
+            background: white;
+        }
+
+        .pagination-link:hover {
+            background: var(--color-stone-100);
+            border-color: var(--color-stone-300);
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--color-stone-600);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .filter-form {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-primary {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 32px 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .filter-section {
+                padding: 20px;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 12px 16px;
+            }
+
+            th {
+                font-size: 11px;
+            }
+
+            /* Hide less important columns on mobile */
+            th:nth-child(3),
+            td:nth-child(3),
+            th:nth-child(5),
+            td:nth-child(5) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pagination {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pagination-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Pays du monde</h1>
+            <p class="subtitle">Explorer et découvrir les pays par région et population</p>
+        </div>
+
+        <div class="filter-section">
+            <form method="get" class="filter-form">
+                <div class="form-group">
+                    <label class="form-label">Rechercher</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" name="q" placeholder="Rechercher par nom..." value="{{ query }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Région</label>
+                    <select name="region">
+                        <option value="">Toutes les régions</option>
+                        {% for region in regions %}
+                            <option value="{{ region }}" {% if region == region_filter %}selected{% endif %}>{{ region|default:"Non spécifié" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Filtrer</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Capitale</th>
+                        <th>Région</th>
+                        <th>Population</th>
+                        <th>Superficie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for country in page_obj %}
+                    <tr>
+                        <td><a href="{{ country.cca3 }}/">{{ country.name }}</a></td>
+                        <td>{{ country.capital }}</td>
+                        <td>{{ country.region }}</td>
+                        <td>{{ country.population|intcomma }}</td>
+                        <td>{{ country.area|intcomma }} km²</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 16px; opacity: 0.3;">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                <line x1="15" y1="9" x2="15.01" y2="9"/>
+                            </svg>
+                            <div>Aucun pays trouvé</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&region={{ region_filter }}" class="pagination-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    Précédent
+                </a>
+            {% endif %}
+
+            <span class="pagination-info">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ query }}&region={{ region_filter }}" class="pagination-link">
+                    Suivant
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
